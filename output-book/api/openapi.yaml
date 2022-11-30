@@ -1,0 +1,421 @@
+openapi: 3.0.3
+info:
+  title: Bookify's Book - OpenAPI 3.0
+  description: This is the API implementation for Bookify's Book actions
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: book
+  description: Actions for Bookify's books
+paths:
+  /book:
+    put:
+      tags:
+      - book
+      summary: Update an existing book
+      description: Update an existing book by Id
+      operationId: updateBook
+      requestBody:
+        description: Update an existing book in the app
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Book'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Book not found
+        "405":
+          description: Validation exception
+      x-swagger-router-controller: Book
+    post:
+      tags:
+      - book
+      summary: Upload a new book to Bookify
+      description: Add a new book to Bookify
+      operationId: uploadBook
+      requestBody:
+        description: Create a new book in the app
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Book'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "405":
+          description: Invalid input
+      x-swagger-router-controller: Book
+  /book/{bookId}:
+    get:
+      tags:
+      - book
+      summary: Get a book to read it and see info
+      description: Get a book to read it and see info
+      operationId: getBook
+      parameters:
+      - name: bookId
+        in: path
+        description: Book id to read and see info
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Book not found
+      x-swagger-router-controller: Book
+    delete:
+      tags:
+      - book
+      summary: Deletes a book
+      description: delete a book
+      operationId: deleteBook
+      parameters:
+      - name: bookId
+        in: path
+        description: Book id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Invalid book value
+      x-swagger-router-controller: Book
+  /book/findByGenre:
+    get:
+      tags:
+      - book
+      summary: Finds books filtered by genre
+      description: Multiple genre values can be provided with comma separated strings
+      operationId: findBooksByGenre
+      parameters:
+      - name: genre
+        in: query
+        description: Genre values that need to be considered for filter
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - Fantasy
+          - Sci-Fi
+          - Horror
+          - Adventure
+          - Mistery
+          - Romance
+          - History
+          - Drama
+          - Thriller
+          - Comedy
+          - Poetry
+          default: Romance
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+                x-content-type: application/json
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        "400":
+          description: Invalid status value
+      x-swagger-router-controller: Book
+  /book/findByAuthor:
+    get:
+      tags:
+      - book
+      summary: Finds books filtered by author
+      description: Multiple author values can be provided with comma separated strings
+      operationId: findBooksByAuthor
+      parameters:
+      - name: author
+        in: query
+        description: Author name that need to be considered for filter
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: George R.R. Martin
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+                x-content-type: application/json
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        "400":
+          description: Invalid status value
+      x-swagger-router-controller: Book
+  /book/{bookId}/rating:
+    get:
+      tags:
+      - book
+      summary: Get book rating
+      description: Returns average rating of a book
+      operationId: getRatingById
+      parameters:
+      - name: bookId
+        in: path
+        description: ID of book to see rating
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Book not found
+      x-swagger-router-controller: Book
+  /book/{bookId}/audiobook:
+    get:
+      tags:
+      - book
+      summary: Get audiobook by bookId
+      description: Returns book's audiobook if exists
+      operationId: getAudioBookById
+      parameters:
+      - name: bookId
+        in: path
+        description: ID of book to get its audiobook
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Audiobook'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Audiobook'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Book not found
+      x-swagger-router-controller: Book
+components:
+  schemas:
+    Genre:
+      type: string
+      description: Book genres enum
+      enum:
+      - Fantasy
+      - Sci-Fi
+      - Horror
+      - Adventure
+      - Mistery
+      - Romance
+      - History
+      - Drama
+      - Thriller
+      - Comedy
+      - Poetry
+    Book:
+      required:
+      - author
+      - bookId
+      - genre
+      - name
+      type: object
+      properties:
+        bookId:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Fire & Blood
+        author:
+          type: string
+          example: George R.R. Martin
+        genre:
+          $ref: '#/components/schemas/Genre'
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book_ratings'
+        audiobook:
+          $ref: '#/components/schemas/Audiobook'
+        coverUrl:
+          type: string
+          example: https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/Fire_%26_Blood_%282018%29_hardcover.jpg/220px-Fire_%26_Blood_%282018%29_hardcover.jpg
+        status:
+          type: string
+          description: book status in the app
+          enum:
+          - available
+          - updating
+          - unavailable
+      example:
+        coverUrl: https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/Fire_%26_Blood_%282018%29_hardcover.jpg/220px-Fire_%26_Blood_%282018%29_hardcover.jpg
+        audiobook:
+          duration: 247
+          narrator: John Doe
+          link: https://www.ivoox.com/fuego-sangre-1_md_32713232_1.mp3
+          status: available
+        author: George R.R. Martin
+        ratings:
+        - rating:
+            rate: 4.7
+            comment: I loved it!
+            username: John
+        - rating:
+            rate: 4.7
+            comment: I loved it!
+            username: John
+        name: Fire & Blood
+        genre: Fantasy
+        bookId: 1
+        status: available
+      xml:
+        name: book
+    Audiobook:
+      required:
+      - status
+      type: object
+      properties:
+        link:
+          type: string
+          example: https://www.ivoox.com/fuego-sangre-1_md_32713232_1.mp3
+        narrator:
+          type: string
+          example: John Doe
+        duration:
+          type: integer
+          example: 247
+        status:
+          type: string
+          description: audiobook status in the app
+          enum:
+          - available
+          - unavailable
+      example:
+        duration: 247
+        narrator: John Doe
+        link: https://www.ivoox.com/fuego-sangre-1_md_32713232_1.mp3
+        status: available
+      xml:
+        name: audiobook
+    Rating:
+      type: object
+      properties:
+        username:
+          type: string
+          example: John
+        comment:
+          type: string
+          example: I loved it!
+        rate:
+          maximum: 5
+          minimum: 1
+          type: number
+          example: 4.7
+      example:
+        rate: 4.7
+        comment: I loved it!
+        username: John
+      xml:
+        name: rating
+    Book_ratings:
+      type: object
+      properties:
+        rating:
+          $ref: '#/components/schemas/Rating'
+      example:
+        rating:
+          rate: 4.7
+          comment: I loved it!
+          username: John
+  requestBodies:
+    Book:
+      description: Book object that needs to be added to the app
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Book'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Book'
