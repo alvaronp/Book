@@ -73,26 +73,6 @@ module.exports.updateBook = function updateBook (req, res, next, body) {
     });
 };
 
-module.exports.updateBook = function updateBook (req, res, next, body) {
-  Book.updateBook(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
-
-module.exports.uploadBook = function uploadBook (req, res, next, body) {
-  Book.uploadBook(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
-
 module.exports.uploadBook = function uploadBook (req, res, next, body) {
   Book.uploadBook(body)
     .then(function (response) {
